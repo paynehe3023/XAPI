@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: newapi-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: RootPassword123!
+      MYSQL_DATABASE: newapi
+    command: --innodb_buffer_pool_size=512M
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - newapi-net
+
+  redis:
+    image: redis:alpine
+    container_name: newapi-redis
+    restart: always
+    command: redis-server --requirepass RedisPassword123!
+    volumes:
+      - ./redis/data:/data
+    networks:
+      - newapi-net
+
+  new-api:
+    image: calciumion/new-api:latest
+    container_name: new-api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      SQL_DSN: "root:RootPassword123!@tcp(mysql:3306)/newapi"
+      REDIS_CONN_STRING: "redis://:RedisPassword123!@redis:6379/0"
+    volumes:
+      - ./data:/data
+      - ./logs:/app/logs
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - newapi-net
+
+networks:
+  newapi-net:
+    driver: bridge
