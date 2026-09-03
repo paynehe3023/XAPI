@@ -35,8 +35,12 @@ services:
     environment:
       SQL_DSN: "root:RootPassword123!@tcp(mysql:3306)/newapi"
       REDIS_CONN_STRING: "redis://:RedisPassword123!@redis:6379/0"
-      LOGIN_RATE_LIMIT: "100"
-      GLOBAL_API_RATE_LIMIT: "100"
+      # 将限流调整到极高的水平，基本等于关闭限流
+      LOGIN_RATE_LIMIT: "10000"
+      GLOBAL_API_RATE_LIMIT: "10000"
+      GLOBAL_WEB_RATE_LIMIT: "10000"
+      # 彻底禁用验证码校验
+      TURNSTILE_CHECK_ENABLED: "false"
     volumes:
       - ./data:/data
       - ./logs:/app/logs
