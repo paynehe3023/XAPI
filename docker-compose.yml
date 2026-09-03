@@ -29,7 +29,7 @@ services:
     container_name: new-api
     restart: always
     ports:
-      - "3000:3000"
+      - "3060:3000"
     environment:
       SQL_DSN: "root:RootPassword123!@tcp(mysql:3306)/newapi"
       REDIS_CONN_STRING: "redis://:RedisPassword123!@redis:6379/0"
