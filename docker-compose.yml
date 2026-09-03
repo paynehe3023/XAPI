@@ -5,6 +5,8 @@ services:
     image: mysql:8.0
     container_name: newapi-mysql
     restart: always
+    ports:
+      - "3306:3306"  # 这一行必须存在！左边是 Windows 宿主机端口，右边是容器端口
     environment:
       MYSQL_ROOT_PASSWORD: RootPassword123!
       MYSQL_DATABASE: newapi
